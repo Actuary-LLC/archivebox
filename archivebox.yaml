@@ -23,6 +23,27 @@ services:
     volumes:
       - /mnt/user/docker/volumes/archivebox/data:/data
       - /mnt/user/docker/volumes/archivebox/cron:/var/spool/cron/crontabs
+    deploy:
+      labels:
+        ## Proxy
+        - traefik.enable=true
+        - traefik.http.routers.archivebox.rule=Host(`archivebox.lan`)
+        - traefik.http.routers.archivebox.entrypoints=websecure
+        - traefik.http.routers.archivebox.service=archivebox
+        - traefik.http.routers.archivebox.tls=true
+        - traefik.http.services.archivebox.loadbalancer.server.port=8888
+        - traefik.http.routers.archivebox.middlewares=middlewares-authentik@file
+        ## Homepage
+          #Service
+        - homepage.group=Data
+        - homepage.name=Archivebox
+        - homepage.description=Internet archive
+        - homepage.icon=archivebox.png
+        - homepage.server=my-docker
+        - homepage.container=archive_box
+        - homepage.href=http://192.168.2.3:8888
+        ## DIUN
+        - diun.enable=true
   scheduler:
     image: archivebox/archivebox:latest
     command: schedule --foreground --update --every=day 'https://content.naic.org/research_moody.htm' # archivebox schedule --every=day --depth=1 'https://news.ycombinator.com'
