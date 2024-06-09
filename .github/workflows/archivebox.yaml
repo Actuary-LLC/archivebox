@@ -7,18 +7,14 @@ on:
 jobs:
   checkout-repository:
     runs-on: [self-hosted]
+    env:
+      ADMIN_USERNAME: ${{ vars.ADMIN_USERNAME }}
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           repository: 'Actuary-LLC/archivebox'
           ref: 'main'       
-  deploy-archivebox:
-    needs: checkout-repository
-    runs-on: [self-hosted]
-    env:
-      ADMIN_USERNAME: ${{ vars.ADMIN_USERNAME }}
-      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
-    steps:
       - name: deploy archive
-      - run: docker stack deploy -c archivebox.yaml archive
+        run: docker stack deploy -c archivebox.yaml archive
