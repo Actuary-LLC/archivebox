@@ -44,6 +44,7 @@ services:
         - homepage.href=http://192.168.2.3:8888
         ## DIUN
         - diun.enable=true
+        - diun.notify_on=new
   scheduler:
     image: archivebox/archivebox:0.7.2
     command: schedule --foreground --update --every=day 'https://content.naic.org/research_moody.htm' # archivebox schedule --every=day --depth=1 'https://news.ycombinator.com'
