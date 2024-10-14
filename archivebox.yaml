@@ -6,7 +6,7 @@ networks:
 
 services:
   box:
-    image: archivebox/archivebox:0.7.2
+    image: archivebox/archivebox:0.8.5rc44
     #command: server --quick-init 0.0.0.0:8000
     ports:
       - 8888:8000
@@ -46,7 +46,7 @@ services:
         - diun.enable=true
         - diun.notify_on=new
   scheduler:
-    image: archivebox/archivebox:0.7.2
+    image: archivebox/archivebox:0.8.5rc44
     command: schedule --foreground --update --every=day 'https://content.naic.org/research_moody.htm' # archivebox schedule --every=day --depth=1 'https://news.ycombinator.com'
     environment:
       - PUID=99
@@ -56,13 +56,3 @@ services:
     volumes:
       - /mnt/user/docker/volumes/archivebox/data:/data
       - /mnt/user/docker/volumes/archivebox/cron:/var/spool/cron/crontabs
-    deploy:
-      labels:
-        ## Proxy
-        - traefik.enable=true
-        - traefik.http.routers.archiveboxs.rule=Host(`archiveboxs.lan`)
-        - traefik.http.routers.archiveboxs.entrypoints=websecure
-        - traefik.http.routers.archiveboxs.service=archiveboxs
-        - traefik.http.routers.archiveboxs.tls=true
-        - traefik.http.services.archiveboxs.loadbalancer.server.port=2376
-        - traefik.http.routers.archiveboxs.middlewares=middlewares-authentik@file
