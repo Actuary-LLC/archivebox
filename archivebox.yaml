@@ -56,3 +56,13 @@ services:
     volumes:
       - /mnt/user/docker/volumes/archivebox/data:/data
       - /mnt/user/docker/volumes/archivebox/cron:/var/spool/cron/crontabs
+    deploy:
+      labels:
+        ## Proxy
+        - traefik.enable=true
+        - traefik.http.routers.archiveboxs.rule=Host(`archiveboxs.lan`)
+        - traefik.http.routers.archiveboxs.entrypoints=websecure
+        - traefik.http.routers.archiveboxs.service=archiveboxs
+        - traefik.http.routers.archiveboxs.tls=true
+        - traefik.http.services.archiveboxs.loadbalancer.server.port=2376
+        - traefik.http.routers.archiveboxs.middlewares=middlewares-authentik@file
