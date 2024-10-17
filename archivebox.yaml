@@ -32,7 +32,7 @@ services:
         - traefik.http.routers.archivebox.service=archivebox
         - traefik.http.routers.archivebox.tls=true
         - traefik.http.services.archivebox.loadbalancer.server.port=8888
-        - traefik.http.routers.archivebox.middlewares=middlewares-authentik@file
+        - traefik.http.routers.archivebox.middlewares=authentik@file
         ## Homepage
           #Service
         - homepage.group=Data
